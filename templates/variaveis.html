@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Integrando HTML ao Flask</title>
+</head>
+<body>
+<h2 style="text-align:center">Integrando HTML com Flask</h2>
+<hr>
+{{chamada}}
+<br>
+<table border='true'>
+	<tr>
+		<td>Matrícula: </td>
+		<td>Nome: </td>
+	</tr>
+{% for matricula,nome in chamada.items() %}
+<tr>
+	<td>{{matricula}}</td>
+	<td>{{nome}}</td>
+</tr>
+{% endfor %}
+
+</table>
+ <form action="{{usando_variaveis}}" method="POST">
+	<label>Nova matricula:</label>
+	<input type="text" name="nova_matricula">
+	<label>Nome:</label>
+	<input type="text" name="novo_aluno">
+	<button>Adicionar</button>
+
+ </form>
+</body>
+</html>

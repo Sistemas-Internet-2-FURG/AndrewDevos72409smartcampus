@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding-top: 56px; /* Espaço para a navbar fixa */
+        }
+        .container {
+            margin-top: 20px;
+        }
+        .card {
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            background-size: cover;
+            background-position: center;
+            color: #fff;
+        }
+        .card-header {
+            background-color: rgba(0, 0, 0, 0.7);
+            color: #fff;
+        }
+        .btn-custom {
+            background-color: #007bff;
+            border-color: #007bff;
+            color: #fff;
+        }
+        .btn-custom:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+        .card-alunos, .card-turmas {
+            flex: 1 1 300px; /* Flexível e com largura mínima */
+            max-width: 45%; /* Limita a largura máxima */
+        }
+        .card-alunos {
+            background-image: url('https://via.placeholder.com/600x400?text=Alunos');
+        }
+        .card-turmas {
+            background-image: url('https://via.placeholder.com/600x400?text=Turmas');
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('dashboard') }}">
+                <i class="fas fa-chalkboard-teacher"></i> Sistema de Aulas
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('login') }}">
+                            <i class="fas fa-sign-in-alt"></i> Login
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('register') }}">
+                            <i class="fas fa-user-plus"></i> Registrar
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('professor_dashboard') }}">
+                            <i class="fas fa-users"></i> Turmas
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="row">
+            <div class="card card-alunos">
+                <div class="card-header">
+                    <h2>Alunos</h2>
+                </div>
+                <div class="card-body">
+                    <h3><a href="{{ url_for('create_student') }}" class="btn btn-custom">Criar Aluno</a></h3>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for aluno in alunos %}
+                            <tr>
+                                <td>{{ aluno.username }}</td>
+                                <td>
+                                    <form action="{{ url_for('delete_student', student_id=aluno.id) }}" method="post" style="display:inline;">
+                                        <button type="submit" class="btn btn-danger">Excluir</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card card-turmas">
+                <div class="card-header">
+                    <h2>Turmas</h2>
+                </div>
+                <div class="card-body">
+                    <h3><a href="{{ url_for('create_class') }}" class="btn btn-secondary">Criar Sala de Aula</a></h3>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for turma in turmas %}
+                            <tr>
+                                <td><a href="{{ url_for('class_details', class_id=turma.id) }}">{{ turma.name }}</a></td>
+                                <td>
+                                    <a href="{{ url_for('edit_class', class_id=turma.id) }}" class="btn btn-warning">Editar</a>
+                                    <form action="{{ url_for('delete_class', class_id=turma.id) }}" method="post" style="display:inline;">
+                                        <button type="submit" class="btn btn-danger">Excluir</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <h3><a href="{{ url_for('professor_dashboard') }}" class="btn btn-info">Ver Turmas</a></h3>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+</body>
+</html>
